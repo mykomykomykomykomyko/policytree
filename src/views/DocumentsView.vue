@@ -4,7 +4,10 @@
       <div class="px-4 py-6 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
           <h1 class="text-3xl font-bold tracking-tight text-gray-900">Documents</h1>
-          <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+          <button 
+            @click="showUploadModal = true"
+            class="btn-primary"
+          >
             <PlusIcon class="h-5 w-5 mr-2" />
             Upload Document
           </button>
@@ -83,23 +86,71 @@
               <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ document.size }}</td>
               <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                 <button class="text-primary-600 hover:text-primary-900 mr-4">Edit</button>
-                <button class="text-red-600 hover:text-red-900">Delete</button>
+                <button 
+                  @click="deleteDocument(document.id)"
+                  class="text-red-600 hover:text-red-900"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+
+    <!-- Upload Modal -->
+    <TransitionRoot appear :show="showUploadModal" as="template">
+      <Dialog as="div" @close="showUploadModal = false" class="relative z-10">
+        <TransitionChild
+          as="template"
+          enter="duration-300 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-200 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black bg-opacity-25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div class="flex min-h-full items-center justify-center p-4 text-center">
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
+            >
+              <DialogPanel class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">
+                  Upload Documents
+                </DialogTitle>
+                <div class="mt-4">
+                  <DocumentUpload @upload-complete="handleUploadComplete" />
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { DocumentIcon, PlusIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue'
+import DocumentUpload from '../components/DocumentUpload.vue'
 
 const searchQuery = ref('')
 const selectedType = ref('')
 const sortBy = ref('name')
+const showUploadModal = ref(false)
 
 const documents = ref([
   {
@@ -153,4 +204,33 @@ const filteredDocuments = computed(() => {
     }
   })
 })
+
+const handleUploadComplete = (files) => {
+  // Add uploaded files to documents list
+  files.forEach(file => {
+    documents.value.push({
+      id: documents.value.length + 1,
+      name: file.name,
+      description: 'Uploaded document',
+      type: 'Document',
+      modified: new Date().toISOString().split('T')[0],
+      size: formatFileSize(file.size)
+    })
+  })
+  showUploadModal.value = false
+}
+
+const deleteDocument = (id) => {
+  if (confirm('Are you sure you want to delete this document?')) {
+    documents.value = documents.value.filter(doc => doc.id !== id)
+  }
+}
+
+const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
 </script> 
