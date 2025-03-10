@@ -1,0 +1,3 @@
+[33m6d8b10d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m feat: Add document upload functionality with drag-and-drop support
+[33m9c51c3c[m fix: Update styling configuration and PostCSS setup
+[33m759b373[m Initial commit: Vue.js policy management interface

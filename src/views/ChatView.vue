@@ -73,24 +73,24 @@
               New Chat
             </button>
           </div>
-        </div>
       </div>
+    </div>
 
       <!-- Chat Area -->
       <div class="flex-1 flex flex-col bg-white">
         <div v-if="selectedChat" class="flex-1 min-h-0">
-          <!-- Chat Messages -->
+        <!-- Chat Messages -->
           <div class="h-full flex flex-col">
             <div class="flex-1 overflow-y-auto p-4 space-y-4" ref="messageContainer">
-              <div
+          <div
                 v-for="message in selectedChat.messages"
-                :key="message.id"
+            :key="message.id"
                 :class="[
                   'flex',
                   message.sender === 'user' ? 'justify-end' : 'justify-start'
                 ]"
-              >
-                <div
+          >
+            <div
                   class="max-w-lg rounded-lg px-4 py-2 space-y-1"
                   :class="[
                     message.sender === 'user'
@@ -100,32 +100,32 @@
                 >
                   <p class="text-sm">{{ message.content }}</p>
                   <p class="text-xs opacity-75">{{ message.time }}</p>
-                </div>
-              </div>
             </div>
+          </div>
+        </div>
 
             <!-- Message Input -->
             <div class="flex-shrink-0 bg-white border-t border-gray-200 p-4">
               <div class="flex space-x-3">
-                <div class="flex-1">
-                  <textarea
+            <div class="flex-1">
+              <textarea
                     v-model="newMessage"
                     rows="1"
                     class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
                     placeholder="Type your message..."
-                    @keydown.enter.prevent="sendMessage"
-                  ></textarea>
-                </div>
-                <button
-                  @click="sendMessage"
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                >
-                  <PaperAirplaneIcon class="h-5 w-5" />
-                </button>
-              </div>
+                @keydown.enter.prevent="sendMessage"
+              ></textarea>
             </div>
+            <button
+              @click="sendMessage"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              <PaperAirplaneIcon class="h-5 w-5" />
+            </button>
           </div>
         </div>
+      </div>
+    </div>
 
         <!-- Empty State -->
         <div
