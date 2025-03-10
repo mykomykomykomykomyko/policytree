@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen bg-gray-50">
     <nav class="bg-white shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <button class="btn-primary">
+            <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
               Sign In
             </button>
           </div>
@@ -51,4 +51,12 @@ const navigation = [
   { name: 'Knowledge Graph', href: '/graph' },
   { name: 'Chat', href: '/chat' },
 ]
-</script> 
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+</style> 
