@@ -12,6 +12,7 @@ const authRoutes = require('./routes/auth')
 const documentRoutes = require('./routes/documents')
 const graphRoutes = require('./routes/graph')
 const chatRoutes = require('./routes/chat')
+const aiRoutes = require('./routes/ai')
 
 const app = express()
 const server = http.createServer(app)
@@ -53,6 +54,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/documents', documentRoutes)
 app.use('/api/graph', graphRoutes)
 app.use('/api/chat', chatRoutes)
+app.use('/api/ai', aiRoutes)
 
 // Socket.io connection handling
 io.on('connection', (socket) => {

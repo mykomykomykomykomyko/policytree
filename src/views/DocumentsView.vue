@@ -4,13 +4,22 @@
       <div class="px-4 py-6 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
           <h1 class="text-3xl font-bold tracking-tight text-gray-900">Documents</h1>
-          <button 
-            @click="showUploadModal = true"
-            class="btn-primary"
-          >
-            <PlusIcon class="h-5 w-5 mr-2" />
-            Upload Document
-          </button>
+          <div class="flex space-x-4">
+            <button
+              @click="showOpenDataModal = true"
+              class="btn-secondary"
+            >
+              <MagnifyingGlassIcon class="h-5 w-5 mr-2" />
+              Search Open Data
+            </button>
+            <button
+              @click="showUploadModal = true"
+              class="btn-primary"
+            >
+              <PlusIcon class="h-5 w-5 mr-2" />
+              Upload Document
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -138,6 +147,46 @@
         </div>
       </Dialog>
     </TransitionRoot>
+
+    <!-- Alberta Open Data Modal -->
+    <TransitionRoot appear :show="showOpenDataModal" as="template">
+      <Dialog as="div" @close="showOpenDataModal = false" class="relative z-10">
+        <TransitionChild
+          as="template"
+          enter="duration-300 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-200 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black bg-opacity-25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div class="flex min-h-full items-center justify-center p-4 text-center">
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
+            >
+              <DialogPanel class="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogTitle as="h3" class="text-lg font-medium leading-6 text-gray-900">
+                  Search Alberta Open Data
+                </DialogTitle>
+                <div class="mt-4">
+                  <AlbertaOpenDataExplorer />
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 
@@ -146,11 +195,13 @@ import { ref, computed } from 'vue'
 import { DocumentIcon, PlusIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue'
 import DocumentUpload from '../components/DocumentUpload.vue'
+import AlbertaOpenDataExplorer from '../components/AlbertaOpenDataExplorer.vue'
 
 const searchQuery = ref('')
 const selectedType = ref('')
 const sortBy = ref('name')
 const showUploadModal = ref(false)
+const showOpenDataModal = ref(false)
 
 const documents = ref([
   {
