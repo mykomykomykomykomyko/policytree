@@ -1,61 +1,58 @@
 <template>
   <div class="space-y-6">
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
-      <button class="btn-primary">
-        Upload Document
-      </button>
+    <header class="bg-gray-800/50 backdrop-blur-sm shadow">
+      <div class="px-4 py-6 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
+      </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div 
+        v-for="stat in stats" 
+        :key="stat.name" 
+        class="bg-gray-800/50 backdrop-blur-sm overflow-hidden shadow rounded-lg hover:bg-gray-800/60 transition-all duration-200"
+      >
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <component :is="stat.icon" class="h-6 w-6 text-primary-400" aria-hidden="true" />
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-300 truncate">{{ stat.name }}</dt>
+                <dd class="flex items-baseline">
+                  <div class="text-2xl font-semibold text-white">{{ stat.value }}</div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Recent Documents Card -->
-      <div class="card">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">Recent Documents</h2>
-        <div class="space-y-4">
-          <div v-for="doc in recentDocuments" :key="doc.id" class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <div class="flex-shrink-0">
-                <DocumentIcon class="h-6 w-6 text-gray-400" />
+    <!-- Recent Activity -->
+    <div class="bg-gray-800/50 backdrop-blur-sm shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg font-medium leading-6 text-white">Recent Activity</h3>
+        <div class="mt-6 flow-root">
+          <ul role="list" class="-my-5 divide-y divide-gray-700">
+            <li 
+              v-for="activity in recentActivity" 
+              :key="activity.id" 
+              class="py-5 hover:bg-gray-800/30 px-4 -mx-4 rounded-lg transition-all duration-200"
+            >
+              <div class="relative focus-within:ring-2 focus-within:ring-primary-500">
+                <h3 class="text-sm font-semibold text-gray-100">
+                  <a href="#" class="hover:text-primary-400 focus:outline-none transition-colors">
+                    {{ activity.title }}
+                  </a>
+                </h3>
+                <p class="mt-1 text-sm text-gray-400 line-clamp-2">{{ activity.description }}</p>
+                <time class="mt-2 text-xs text-gray-500">{{ activity.date }}</time>
               </div>
-              <div>
-                <p class="text-sm font-medium text-gray-900">{{ doc.title }}</p>
-                <p class="text-xs text-gray-500">{{ doc.date }}</p>
-              </div>
-            </div>
-            <button class="text-primary-600 hover:text-primary-700">
-              View
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions Card -->
-      <div class="card">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
-        <div class="space-y-3">
-          <button class="w-full btn-secondary flex items-center justify-center space-x-2">
-            <ChartBarIcon class="h-5 w-5" />
-            <span>View Knowledge Graph</span>
-          </button>
-          <button class="w-full btn-secondary flex items-center justify-center space-x-2">
-            <ChatBubbleLeftIcon class="h-5 w-5" />
-            <span>Open Chat</span>
-          </button>
-          <button class="w-full btn-secondary flex items-center justify-center space-x-2">
-            <MagnifyingGlassIcon class="h-5 w-5" />
-            <span>Search Policies</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Insights Card -->
-      <div class="card">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">Policy Insights</h2>
-        <div class="space-y-4">
-          <div v-for="insight in insights" :key="insight.id" class="border-l-4 border-primary-500 pl-4">
-            <p class="text-sm text-gray-900">{{ insight.text }}</p>
-            <p class="text-xs text-gray-500 mt-1">{{ insight.source }}</p>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -63,29 +60,34 @@
 </template>
 
 <script setup>
-import { DocumentIcon, ChartBarIcon, ChatBubbleLeftIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
+import { DocumentTextIcon, ChatBubbleLeftIcon, ShareIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
 
-const recentDocuments = [
-  { id: 1, title: 'HR Policy 2023', date: '2023-08-15' },
-  { id: 2, title: 'Security Guidelines', date: '2023-08-14' },
-  { id: 3, title: 'Code of Conduct', date: '2023-08-13' },
-]
+const stats = ref([
+  { name: 'Total Documents', value: '148', icon: DocumentTextIcon },
+  { name: 'Active Chats', value: '12', icon: ChatBubbleLeftIcon },
+  { name: 'Shared Policies', value: '24', icon: ShareIcon },
+  { name: 'Team Members', value: '8', icon: UserGroupIcon },
+])
 
-const insights = [
+const recentActivity = ref([
   {
     id: 1,
-    text: 'Updated compliance requirements for remote work policies',
-    source: 'HR Policy 2023'
+    title: 'Privacy Policy Updated',
+    description: 'The company privacy policy has been updated to reflect new data protection regulations.',
+    date: '1 hour ago'
   },
   {
     id: 2,
-    text: 'New security protocols for data handling',
-    source: 'Security Guidelines'
+    title: 'New Team Member Added',
+    description: 'Sarah Johnson has been added to the policy management team.',
+    date: '3 hours ago'
   },
   {
     id: 3,
-    text: 'Revised ethical guidelines for employee conduct',
-    source: 'Code of Conduct'
+    title: 'Document Shared',
+    description: 'Terms of Service document has been shared with the legal team for review.',
+    date: '5 hours ago'
   }
-]
+])
 </script> 
