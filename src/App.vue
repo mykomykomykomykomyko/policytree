@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
+            <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-500 hover:bg-primary-600 focus:ring-2 focus:ring-offset-2 focus:ring-primary-400">
               Sign In
             </button>
           </div>
@@ -50,7 +50,6 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Documents', href: '/documents' },
   { name: 'Knowledge Graph', href: '/graph' },
-  { name: 'Chat', href: '/chat' },
 ]
 </script>
 
@@ -59,14 +58,18 @@ const navigation = [
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(140deg, 
-    #1a1a1a 0%, 
-    #2c365e 25%, 
-    #444b8c 50%, 
-    #2c365e 75%, 
-    #1a1a1a 100%
+  background: linear-gradient(
+    -45deg,
+    #1a1a2e 0%,
+    #2c365e 20%,
+    #444b8c 40%,
+    #4b3f72 50%,
+    #3d5a80 60%,
+    #48466d 70%,
+    #3d315b 80%,
+    #1a1a2e 100%
   );
-  background-size: 200% 200%;
+  background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
   min-height: 100vh;
   margin: 0;
@@ -74,8 +77,20 @@ body {
 }
 
 @keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style> 
